@@ -6,7 +6,7 @@ class APIService {
 
   APIService(this._client);
 
-  APIService.defaultClient() : _client = http.Client();
+  factory APIService.defaultClient() => APIService(http.Client());
 
   static final _apiKey = dotenv.env['API_KEY']!;
   static const String _baseUrl = "alpha-vantage.p.rapidapi.com";

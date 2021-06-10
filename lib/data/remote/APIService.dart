@@ -1,6 +1,8 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:mockito/annotations.dart';
 
+@GenerateMocks([http.Client])
 class APIService {
   final http.Client _client;
 
@@ -17,7 +19,6 @@ class APIService {
     "useQueryString": "true",
   };
 
-  @override
   Future<String> get({
     required String endpoint,
     required Map<String, String> query,

@@ -1,18 +1,26 @@
 import 'dart:convert';
 
+import 'package:currency_converter/data/remote/exchange-rate-endpoint/FakeExchangeRateAPIService.dart';
+
 import '../APIService.dart';
-import 'ExchangeRateEndpoint.dart';
 import '../models/ExchangeRateDTO.dart';
 
-class ExchangeRateEndpointImpl implements ExchangeRateEndpoint{
+class ExchangeRateEndpointImpl {
   APIService _service;
 
   ExchangeRateEndpointImpl(this._service);
 
-  @override
+  factory ExchangeRateEndpointImpl.defaultInstance() {
+    return ExchangeRateEndpointImpl(APIService.defaultClient());
+  }
+
+  factory ExchangeRateEndpointImpl.fake() {
+    return ExchangeRateEndpointImpl(FakeExchangeRateAPIService.getInstance());
+  }
+
+
   Future<ExchangeRateDTO> getExchangeRate(
       {required String fromCurrencyCode, required String toCurrencyCode}) async {
-
     try {
       final json = await _service.get(endpoint: "/query", query: {
         "to_currency": toCurrencyCode,

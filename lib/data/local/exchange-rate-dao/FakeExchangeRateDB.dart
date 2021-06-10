@@ -4,8 +4,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
 
+@GenerateMocks([Database])
 class FakeExchangeRateDB {
-  @GenerateMocks([Database])
   static Database getInstance() {
     final db = MockDatabase();
     when(db.query(StringConstants.tableName)).thenAnswer((_) async => [
@@ -26,6 +26,9 @@ class FakeExchangeRateDB {
             '${StringConstants.exchange_rate}': 0.13
           }
         ]);
+    when(db.insert(StringConstants.tableName, any,
+            conflictAlgorithm: anyNamed('conflictAlgorithm')))
+        .thenAnswer((_) async => 0);
     return db;
   }
 }

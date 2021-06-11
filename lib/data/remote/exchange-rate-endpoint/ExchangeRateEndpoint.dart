@@ -5,17 +5,17 @@ import 'package:currency_converter/data/remote/exchange-rate-endpoint/FakeExchan
 import '../APIService.dart';
 import '../models/ExchangeRateDTO.dart';
 
-class ExchangeRateEndpointImpl {
+class ExchangeRateEndpoint {
   APIService _service;
 
-  ExchangeRateEndpointImpl(this._service);
+  ExchangeRateEndpoint(this._service);
 
-  factory ExchangeRateEndpointImpl.defaultInstance() {
-    return ExchangeRateEndpointImpl(APIService.defaultClient());
+  factory ExchangeRateEndpoint.defaultInstance() {
+    return ExchangeRateEndpoint(APIService.defaultClient());
   }
 
-  factory ExchangeRateEndpointImpl.fake() {
-    return ExchangeRateEndpointImpl(FakeExchangeRateAPIService.getInstance());
+  factory ExchangeRateEndpoint.fake() {
+    return ExchangeRateEndpoint(FakeExchangeRateAPIService.getInstance());
   }
 
 

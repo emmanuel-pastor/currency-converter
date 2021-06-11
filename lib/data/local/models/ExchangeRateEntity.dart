@@ -1,7 +1,7 @@
 import 'package:currency_converter/data/local/StringConstants.dart';
 
 class ExchangeRateEntity {
-  final int? id;
+  var id;
   final String fromCurrencyCode;
   final String fromCurrencyName;
   final String toCurrencyCode;
@@ -9,13 +9,17 @@ class ExchangeRateEntity {
   final double exchangeRate;
 
   ExchangeRateEntity({
-    this.id,
+    String? this.id,
     required this.fromCurrencyCode,
     required this.fromCurrencyName,
     required this.toCurrencyCode,
     required this.toCurrencyName,
     required this.exchangeRate,
-  });
+  }) {
+    if (id == null) {
+      id = this.fromCurrencyCode + this.toCurrencyCode;
+    }
+  }
 
   Map<String, dynamic> toMap() {
     var map = {

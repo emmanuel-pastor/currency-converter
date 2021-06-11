@@ -3,7 +3,7 @@ import 'package:currency_converter/data/remote/models/ExchangeRateDTO.dart';
 import 'package:currency_converter/domain/models/ExchangeRate.dart';
 
 class ExchangeRateMapper {
-  static ExchangeRate formEntity(ExchangeRateEntity entity) {
+  static ExchangeRate fromEntity(ExchangeRateEntity entity) {
     return ExchangeRate(entity.fromCurrencyCode, entity.fromCurrencyName, entity.toCurrencyCode,
         entity.toCurrencyName, entity.exchangeRate);
   }

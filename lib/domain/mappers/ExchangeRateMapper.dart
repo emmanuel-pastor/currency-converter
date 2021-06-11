@@ -23,7 +23,7 @@ class ExchangeRateMapper {
         dto.realtimeCurrencyExchangeRate.fromCurrencyName,
         dto.realtimeCurrencyExchangeRate.toCurrencyCode,
         dto.realtimeCurrencyExchangeRate.toCurrencyName,
-        dto.realtimeCurrencyExchangeRate.exchangeRate as double);
+        double.parse(dto.realtimeCurrencyExchangeRate.exchangeRate));
   }
 
   static ExchangeRateDTO toDTO(ExchangeRate exchangeRate) {

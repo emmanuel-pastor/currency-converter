@@ -39,4 +39,16 @@ class ExchangeRateDAO {
       return ExchangeRateEntity.fromMap(maps[i]);
     });
   }
+
+  Future<ExchangeRateEntity> getExchangeRate(
+      {required String fromCurrencyCode, required String toCurrencyCode}) async {
+    final db = await _getDB();
+    final List<Map<String, dynamic>> maps = await db.query(StringConstants.tableName,
+        where:
+        '${StringConstants.from_currency_code} = ? and ${StringConstants.to_currency_code} = ?',
+        whereArgs: [fromCurrencyCode, toCurrencyCode],
+        limit: 1);
+
+    return ExchangeRateEntity.fromMap(maps.first);
+  }
 }

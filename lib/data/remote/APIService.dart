@@ -5,6 +5,7 @@ import 'package:mockito/annotations.dart';
 @GenerateMocks([http.Client])
 class APIService {
   final http.Client _client;
+  static const _timeoutSeconds = 10;
 
   APIService(this._client);
 
@@ -23,8 +24,10 @@ class APIService {
     required String endpoint,
     required Map<String, String> query,
   }) async {
-    http.Response response =
-        await _client.get(Uri.https(_baseUrl, endpoint, query), headers: _headers);
+    http.Response response = await _client
+        .get(Uri.https(_baseUrl, endpoint, query), headers: _headers)
+        .timeout(const Duration(seconds: _timeoutSeconds));
+
     if (response.statusCode == 200) {
       return response.body;
     } else {

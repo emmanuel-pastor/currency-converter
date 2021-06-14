@@ -1,14 +1,15 @@
 import 'package:currency_converter/domain/repositories/ExchangeRateRepository.dart';
 
-typedef ConversionUseCase = Future<double?> Function(
-    {required double amount, required String fromCurrencyCode, required String toCurrencyCode});
+class ConversionUseCase {
+  final _repo;
 
-ConversionUseCase conversionUseCase(ExchangeRateRepository repo) {
-  return (
+  ConversionUseCase(ExchangeRateRepository this._repo);
+
+  Future<double?> convert(
       {required double amount,
       required String fromCurrencyCode,
       required String toCurrencyCode}) async {
-    final exchangeRate = await repo.getExchangeRate(
+    final exchangeRate = await _repo.getExchangeRate(
         fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
 
     final rate = exchangeRate?.rate;
@@ -17,5 +18,5 @@ ConversionUseCase conversionUseCase(ExchangeRateRepository repo) {
     } else {
       throw Exception('Could not load the exchange rate');
     }
-  };
+  }
 }

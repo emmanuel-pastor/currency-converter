@@ -14,7 +14,7 @@ class ExchangeRateMapper {
         fromCurrencyName: exchangeRate.fromCurrencyName,
         toCurrencyCode: exchangeRate.toCurrencyCode,
         toCurrencyName: exchangeRate.toCurrencyName,
-        exchangeRate: exchangeRate.exchangeRate);
+        exchangeRate: exchangeRate.rate);
   }
 
   static ExchangeRate fromDTO(ExchangeRateDTO dto) {
@@ -33,7 +33,7 @@ class ExchangeRateMapper {
       fromCurrencyName: exchangeRate.fromCurrencyName,
       toCurrencyCode: exchangeRate.toCurrencyCode,
       toCurrencyName: exchangeRate.toCurrencyName,
-      exchangeRate: exchangeRate.exchangeRate.toString(),
+      exchangeRate: exchangeRate.rate.toString(),
       lastRefreshed: DateTime.now(),
       timeZone: DateTime.now().timeZoneName,
       bidPrice: "",

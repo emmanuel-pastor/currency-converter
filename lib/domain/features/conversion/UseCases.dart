@@ -11,7 +11,7 @@ ConversionUseCase conversionUseCase(ExchangeRateRepository repo) {
     final exchangeRate = await repo.getExchangeRate(
         fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
 
-    final rate = exchangeRate?.exchangeRate;
+    final rate = exchangeRate?.rate;
     if (rate != null) {
       return Future<double>.value(amount * rate);
     } else {

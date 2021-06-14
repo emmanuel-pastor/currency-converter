@@ -3,17 +3,17 @@ class ExchangeRate {
   final String fromCurrencyName;
   final String toCurrencyCode;
   final String toCurrencyName;
-  final double exchangeRate;
+  final double rate;
 
   ExchangeRate(
       this.fromCurrencyCode,
       this.fromCurrencyName,
       this.toCurrencyCode,
       this.toCurrencyName,
-      this.exchangeRate,);
+      this.rate,);
 
   @override
   String toString() {
-    return 'ExchangeRateEntity {fromCurrencyCode: $fromCurrencyCode, fromCurrencyName: $fromCurrencyName, toCurrencyCode: $toCurrencyCode, toCurrencyName: $toCurrencyName, exchangeRate: $exchangeRate}';
+    return 'ExchangeRateEntity {fromCurrencyCode: $fromCurrencyCode, fromCurrencyName: $fromCurrencyName, toCurrencyCode: $toCurrencyCode, toCurrencyName: $toCurrencyName, exchangeRate: $rate}';
   }
 }

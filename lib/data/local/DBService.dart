@@ -25,7 +25,7 @@ class DBService {
 
   static Future<void> _createExchangeRateTable(Database db) async {
     return db.execute(
-      'CREATE TABLE ${StringConstants.tableName}(${StringConstants.id} TEXT PRIMARY KEY NOT NULL, ${StringConstants.from_currency_code} TEXT, ${StringConstants.from_currency_name} TEXT, ${StringConstants.to_currency_code} TEXT, ${StringConstants.to_currency_name} TEXT, ${StringConstants.exchange_rate} FLOAT)',
+      'CREATE TABLE ${StringConstants.tableName}(${StringConstants.id} TEXT PRIMARY KEY NOT NULL, ${StringConstants.from_currency_code} TEXT, ${StringConstants.from_currency_name} TEXT, ${StringConstants.to_currency_code} TEXT, ${StringConstants.to_currency_name} TEXT, ${StringConstants.rate} FLOAT)',
     );
   }
 }

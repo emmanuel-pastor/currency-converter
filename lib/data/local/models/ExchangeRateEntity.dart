@@ -6,7 +6,7 @@ class ExchangeRateEntity {
   final String fromCurrencyName;
   final String toCurrencyCode;
   final String toCurrencyName;
-  final double exchangeRate;
+  final double rate;
 
   ExchangeRateEntity({
     String? this.id,
@@ -14,7 +14,7 @@ class ExchangeRateEntity {
     required this.fromCurrencyName,
     required this.toCurrencyCode,
     required this.toCurrencyName,
-    required this.exchangeRate,
+    required this.rate,
   }) {
     if (id == null) {
       id = this.fromCurrencyCode + this.toCurrencyCode;
@@ -27,7 +27,7 @@ class ExchangeRateEntity {
       StringConstants.from_currency_name: fromCurrencyName,
       StringConstants.to_currency_code: toCurrencyCode,
       StringConstants.to_currency_name: toCurrencyName,
-      StringConstants.exchange_rate: exchangeRate
+      StringConstants.rate: rate
     };
     if (id != null) map[StringConstants.id] = id!;
 
@@ -40,11 +40,11 @@ class ExchangeRateEntity {
         fromCurrencyName: map[StringConstants.from_currency_name],
         toCurrencyCode: map[StringConstants.to_currency_code],
         toCurrencyName: map[StringConstants.to_currency_name],
-        exchangeRate: map[StringConstants.exchange_rate],
+        rate: map[StringConstants.rate],
       );
 
   @override
   String toString() {
-    return 'ExchangeRateEntity {id: $id, fromCurrencyCode: $fromCurrencyCode, fromCurrencyName: $fromCurrencyName, toCurrencyCode: $toCurrencyCode, toCurrencyName: $toCurrencyName, exchangeRate: $exchangeRate}';
+    return 'ExchangeRateEntity {id: $id, fromCurrencyCode: $fromCurrencyCode, fromCurrencyName: $fromCurrencyName, toCurrencyCode: $toCurrencyCode, toCurrencyName: $toCurrencyName, exchangeRate: $rate}';
   }
 }

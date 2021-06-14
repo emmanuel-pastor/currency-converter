@@ -6,5 +6,5 @@ class StringConstants {
   static const from_currency_name = 'from_currency_name';
   static const to_currency_code = 'to_currency_code';
   static const to_currency_name = 'to_currency_name';
-  static const exchange_rate = 'exchange_rate';
+  static const rate = 'rate';
 }

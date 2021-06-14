@@ -15,7 +15,7 @@ class FakeExchangeRateDB {
       '${StringConstants.from_currency_name}': 'United States Dollar',
       '${StringConstants.to_currency_code}': 'JPY',
       '${StringConstants.to_currency_name}': 'Japanese Yen',
-      '${StringConstants.exchange_rate}': 100.003
+      '${StringConstants.rate}': 100.003
     };
     final exchangeRate2 = {
       '${StringConstants.id}': 'CNYEUR',
@@ -23,7 +23,7 @@ class FakeExchangeRateDB {
       '${StringConstants.from_currency_name}': 'Chinese Yuan',
       '${StringConstants.to_currency_code}': 'EUR',
       '${StringConstants.to_currency_name}': 'Euro',
-      '${StringConstants.exchange_rate}': 0.13
+      '${StringConstants.rate}': 0.13
     };
 
     when(db.query(StringConstants.tableName))

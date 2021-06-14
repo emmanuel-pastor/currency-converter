@@ -5,7 +5,7 @@ import 'package:currency_converter/domain/models/ExchangeRate.dart';
 class ExchangeRateMapper {
   static ExchangeRate fromEntity(ExchangeRateEntity entity) {
     return ExchangeRate(entity.fromCurrencyCode, entity.fromCurrencyName, entity.toCurrencyCode,
-        entity.toCurrencyName, entity.exchangeRate);
+        entity.toCurrencyName, entity.rate);
   }
 
   static ExchangeRateEntity toEntity(ExchangeRate exchangeRate) {
@@ -14,7 +14,7 @@ class ExchangeRateMapper {
         fromCurrencyName: exchangeRate.fromCurrencyName,
         toCurrencyCode: exchangeRate.toCurrencyCode,
         toCurrencyName: exchangeRate.toCurrencyName,
-        exchangeRate: exchangeRate.rate);
+        rate: exchangeRate.rate);
   }
 
   static ExchangeRate fromDTO(ExchangeRateDTO dto) {

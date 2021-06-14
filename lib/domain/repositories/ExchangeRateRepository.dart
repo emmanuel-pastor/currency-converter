@@ -4,12 +4,12 @@ import 'package:currency_converter/data/remote/exchange-rate-endpoint/ExchangeRa
 import 'package:currency_converter/domain/mappers/ExchangeRateMapper.dart';
 import 'package:currency_converter/domain/models/ExchangeRate.dart';
 
-class Repository {
+class ExchangeRateRepository {
   ExchangeRateDAO _dao;
   ExchangeRateEndpoint _endpoint;
   late Connectivity _connectivity;
 
-  Repository(this._dao, this._endpoint) {
+  ExchangeRateRepository(this._dao, this._endpoint) {
     _connectivity = Connectivity();
   }
 

@@ -6,8 +6,8 @@ class ConversionUseCase {
   ConversionUseCase(ExchangeRateRepository this._repo);
 
   Future<double?> convert(
-      {required double amount,
-      required String fromCurrencyCode,
+      double amount,
+      {required String fromCurrencyCode,
       required String toCurrencyCode}) async {
     final exchangeRate = await _repo.getExchangeRate(
         fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);

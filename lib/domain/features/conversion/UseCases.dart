@@ -5,7 +5,7 @@ class ConversionUseCase {
 
   ConversionUseCase(ExchangeRateRepository this._repo);
 
-  Future<double?> convert(
+  Future<double> convert(
       double amount,
       {required String fromCurrencyCode,
       required String toCurrencyCode}) async {

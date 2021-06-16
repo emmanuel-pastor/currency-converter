@@ -14,7 +14,7 @@ class BaseScopedModel extends Model {
   }
 
   void setErrorMessage(String message) {
-    _errorMessage = errorMessage;
+    _errorMessage = message;
     notifyListeners();
   }
 }

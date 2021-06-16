@@ -8,6 +8,7 @@ class ExchangeRateRepository {
   ExchangeRateDAO _dao;
   ExchangeRateEndpoint _endpoint;
   late Connectivity _connectivity;
+  ExchangeRate? _exchangeRate;
 
   ExchangeRateRepository(this._dao, this._endpoint) {
     _connectivity = Connectivity();
@@ -17,26 +18,29 @@ class ExchangeRateRepository {
       {required String fromCurrencyCode, required String toCurrencyCode}) async {
     ConnectivityResult connectivityResult = await _connectivity.checkConnectivity();
 
-    ExchangeRate? exchangeRate;
-    if (connectivityResult == ConnectivityResult.none) {
-      // Get the exchange rate from the database
-      final exchangeRateEntity = await _dao.getExchangeRate(
-          fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
-
-      if (exchangeRateEntity != null) {
-        exchangeRate = ExchangeRateMapper.fromEntity(exchangeRateEntity);
+    if (_exchangeRate == null) {
+      if (connectivityResult == ConnectivityResult.none) {
+        _exchangeRate = await _getExchangeRateFromDatabase(
+            fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
+      } else {
+        final dto = await _endpoint.getExchangeRate(
+            fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
+        _exchangeRate = ExchangeRateMapper.fromDTO(dto);
       }
-    } else {
-      // Get the exchange rate from the API
-      final exchangeRateDTO = await _endpoint.getExchangeRate(
-          fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
-
-      exchangeRate = ExchangeRateMapper.fromDTO(exchangeRateDTO);
-
-      // Update the database with the new exchange rate
-      _dao.insert(ExchangeRateMapper.toEntity(exchangeRate));
     }
 
-    return Future<ExchangeRate?>.value(exchangeRate);
+    return Future<ExchangeRate?>.value(_exchangeRate);
+  }
+
+  Future<ExchangeRate?> _getExchangeRateFromDatabase(
+      {required String fromCurrencyCode, required String toCurrencyCode}) async {
+    final exchangeRateEntity = await _dao.getExchangeRate(
+        fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
+
+    if (exchangeRateEntity != null) {
+      return ExchangeRateMapper.fromEntity(exchangeRateEntity);
+    } else {
+      return null;
+    }
   }
 }

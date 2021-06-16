@@ -18,14 +18,28 @@ class ExchangeRateRepository {
       {required String fromCurrencyCode, required String toCurrencyCode}) async {
     ConnectivityResult connectivityResult = await _connectivity.checkConnectivity();
 
-    if (_exchangeRate == null) {
-      if (connectivityResult == ConnectivityResult.none) {
+    final isNewOrNotMemoized = _exchangeRate == null ||
+        fromCurrencyCode != _exchangeRate?.fromCurrencyCode ||
+        toCurrencyCode != _exchangeRate?.toCurrencyCode;
+    final hasNoNetwork = connectivityResult == ConnectivityResult.none;
+
+    if (isNewOrNotMemoized) {
+      if (hasNoNetwork) {
         _exchangeRate = await _getExchangeRateFromDatabase(
             fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
       } else {
-        final dto = await _endpoint.getExchangeRate(
-            fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
-        _exchangeRate = ExchangeRateMapper.fromDTO(dto);
+        try {
+          final dto = await _endpoint.getExchangeRate(
+              fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
+          _exchangeRate = ExchangeRateMapper.fromDTO(dto);
+
+          if (_exchangeRate != null) {
+            _dao.insert(ExchangeRateMapper.toEntity(_exchangeRate!));
+          }
+        } catch (e) {
+          _exchangeRate = await _getExchangeRateFromDatabase(
+              fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
+        }
       }
     }
 

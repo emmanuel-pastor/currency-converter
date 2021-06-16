@@ -1,6 +1,12 @@
+import 'package:currency_converter/ServiceLocator.dart';
+import 'package:currency_converter/presentation/home/HomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load();
+  setupLocator();
+
   runApp(MyApp());
 }
 
@@ -12,29 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          'Hello world!',
-          style: Theme.of(context).textTheme.headline4,
-        ),
-      ),
+      home: HomePage(),
     );
   }
 }

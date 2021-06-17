@@ -1,8 +1,3 @@
-import 'dart:convert';
-
-ExchangeRateDTO welcomeFromJson(String str) => ExchangeRateDTO.fromJson(json.decode(str));
-
-String welcomeToJson(ExchangeRateDTO data) => json.encode(data.toJson());
 
 class ExchangeRateDTO {
   ExchangeRateDTO({

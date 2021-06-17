@@ -1,6 +1,6 @@
 import 'package:currency_converter/data/local/models/ExchangeRateEntity.dart';
 import 'package:currency_converter/data/remote/models/ExchangeRateDTO.dart';
-import 'package:currency_converter/domain/models/ExchangeRate.dart';
+import 'package:currency_converter/domain/models/exchange-rate/ExchangeRate.dart';
 
 class ExchangeRateMapper {
   static ExchangeRate fromEntity(ExchangeRateEntity entity) {

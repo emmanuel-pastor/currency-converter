@@ -1,8 +1,8 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:currency_converter/data/local/exchange-rate-dao/ExchangeRateDAO.dart';
 import 'package:currency_converter/data/remote/exchange-rate-endpoint/ExchangeRateEndpoint.dart';
-import 'package:currency_converter/domain/mappers/ExchangeRateMapper.dart';
-import 'package:currency_converter/domain/models/ExchangeRate.dart';
+import 'package:currency_converter/domain/models/exchange-rate/ExchangeRateMapper.dart';
+import 'package:currency_converter/domain/models/exchange-rate/ExchangeRate.dart';
 
 class ExchangeRateRepository {
   ExchangeRateDAO _dao;

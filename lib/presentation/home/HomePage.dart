@@ -38,8 +38,8 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CurrencyDropdown(
-                  selectedCurrency: scopedModel.fromCurrencyCode,
-                  disabledCurrency: scopedModel.toCurrencyCode,
+                  selectedCurrencyCode: scopedModel.fromCurrencyCode,
+                  disabledCurrencyCode: scopedModel.toCurrencyCode,
                   onCurrencyChanged: scopedModel.onFromCurrencyChanged,
                 ),
                 SizedBox(height: 20),
@@ -65,8 +65,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 20),
                 CurrencyDropdown(
-                  selectedCurrency: scopedModel.toCurrencyCode,
-                  disabledCurrency: scopedModel.fromCurrencyCode,
+                  selectedCurrencyCode: scopedModel.toCurrencyCode,
+                  disabledCurrencyCode: scopedModel.fromCurrencyCode,
                   onCurrencyChanged: scopedModel.onToCurrencyChanged,
                 ),
                 SizedBox(height: 20),

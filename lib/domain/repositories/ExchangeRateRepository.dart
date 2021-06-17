@@ -18,12 +18,12 @@ class ExchangeRateRepository {
       {required String fromCurrencyCode, required String toCurrencyCode}) async {
     ConnectivityResult connectivityResult = await _connectivity.checkConnectivity();
 
-    final isNewOrNotMemoized = _exchangeRate == null ||
+    final isNotMemoized = _exchangeRate == null ||
         fromCurrencyCode != _exchangeRate?.fromCurrencyCode ||
         toCurrencyCode != _exchangeRate?.toCurrencyCode;
     final hasNoNetwork = connectivityResult == ConnectivityResult.none;
 
-    if (isNewOrNotMemoized) {
+    if (isNotMemoized) {
       if (hasNoNetwork) {
         _exchangeRate = await _getExchangeRateFromDatabase(
             fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);

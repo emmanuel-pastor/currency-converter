@@ -1,5 +1,5 @@
 import 'package:currency_converter/data/local/DBService.dart';
-import 'package:currency_converter/data/local/StringConstants.dart';
+import 'package:currency_converter/data/local/DBStrings.dart';
 import 'package:currency_converter/data/local/exchange-rate-dao/FakeExchangeRateDB.dart';
 import 'package:currency_converter/data/local/models/ExchangeRateEntity.dart';
 import 'package:sqflite/sqflite.dart';
@@ -25,7 +25,7 @@ class ExchangeRateDAO {
   Future<int> insert(ExchangeRateEntity entity) async {
     final db = await _getDB();
     return await db.insert(
-      StringConstants.tableName,
+      DBStrings.tableName,
       entity.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -33,7 +33,7 @@ class ExchangeRateDAO {
 
   Future<List<ExchangeRateEntity>> getAllExchangeRates() async {
     final db = await _getDB();
-    final List<Map<String, dynamic>> maps = await db.query(StringConstants.tableName);
+    final List<Map<String, dynamic>> maps = await db.query(DBStrings.tableName);
 
     return List.generate(maps.length, (i) {
       return ExchangeRateEntity.fromMap(maps[i]);
@@ -43,9 +43,9 @@ class ExchangeRateDAO {
   Future<ExchangeRateEntity?> getExchangeRate(
       {required String fromCurrencyCode, required String toCurrencyCode}) async {
     final db = await _getDB();
-    final List<Map<String, dynamic>> maps = await db.query(StringConstants.tableName,
+    final List<Map<String, dynamic>> maps = await db.query(DBStrings.tableName,
         where:
-        '${StringConstants.from_currency_code} = ? and ${StringConstants.to_currency_code} = ?',
+        '${DBStrings.from_currency_code} = ? and ${DBStrings.to_currency_code} = ?',
         whereArgs: [fromCurrencyCode, toCurrencyCode],
         limit: 1);
 

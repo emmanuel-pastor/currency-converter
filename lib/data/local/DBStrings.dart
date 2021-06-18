@@ -1,4 +1,4 @@
-class StringConstants {
+class DBStrings {
   static const dbName = 'currency_converter_database.db';
   static const tableName = 'exchange_rate';
   static const id = 'id';

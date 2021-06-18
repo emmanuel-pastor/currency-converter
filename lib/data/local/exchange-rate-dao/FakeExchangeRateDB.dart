@@ -1,5 +1,5 @@
 import 'package:currency_converter/data/local/Database.mocks.dart';
-import 'package:currency_converter/data/local/StringConstants.dart';
+import 'package:currency_converter/data/local/DBStrings.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
@@ -10,29 +10,29 @@ class FakeExchangeRateDB {
     final db = MockDatabase();
 
     final exchangeRate1 = {
-      '${StringConstants.id}': 'USDJPY',
-      '${StringConstants.from_currency_code}': 'USD',
-      '${StringConstants.from_currency_name}': 'United States Dollar',
-      '${StringConstants.to_currency_code}': 'JPY',
-      '${StringConstants.to_currency_name}': 'Japanese Yen',
-      '${StringConstants.rate}': 100.003
+      '${DBStrings.id}': 'USDJPY',
+      '${DBStrings.from_currency_code}': 'USD',
+      '${DBStrings.from_currency_name}': 'United States Dollar',
+      '${DBStrings.to_currency_code}': 'JPY',
+      '${DBStrings.to_currency_name}': 'Japanese Yen',
+      '${DBStrings.rate}': 100.003
     };
     final exchangeRate2 = {
-      '${StringConstants.id}': 'CNYEUR',
-      '${StringConstants.from_currency_code}': 'CNY',
-      '${StringConstants.from_currency_name}': 'Chinese Yuan',
-      '${StringConstants.to_currency_code}': 'EUR',
-      '${StringConstants.to_currency_name}': 'Euro',
-      '${StringConstants.rate}': 0.13
+      '${DBStrings.id}': 'CNYEUR',
+      '${DBStrings.from_currency_code}': 'CNY',
+      '${DBStrings.from_currency_name}': 'Chinese Yuan',
+      '${DBStrings.to_currency_code}': 'EUR',
+      '${DBStrings.to_currency_name}': 'Euro',
+      '${DBStrings.rate}': 0.13
     };
 
-    when(db.query(StringConstants.tableName))
+    when(db.query(DBStrings.tableName))
         .thenAnswer((_) async => [exchangeRate1, exchangeRate2]);
 
-    when(db.query(StringConstants.tableName, where: anyNamed('where'), whereArgs: anyNamed('whereArgs'), limit: anyNamed('limit')))
+    when(db.query(DBStrings.tableName, where: anyNamed('where'), whereArgs: anyNamed('whereArgs'), limit: anyNamed('limit')))
         .thenAnswer((_) async => [exchangeRate1]);
 
-    when(db.insert(StringConstants.tableName, any,
+    when(db.insert(DBStrings.tableName, any,
             conflictAlgorithm: anyNamed('conflictAlgorithm')))
         .thenAnswer((_) async => 0);
     return db;

@@ -1,4 +1,4 @@
-import 'package:currency_converter/data/local/StringConstants.dart';
+import 'package:currency_converter/data/local/DBStrings.dart';
 
 class ExchangeRateEntity {
   var id;
@@ -23,24 +23,24 @@ class ExchangeRateEntity {
 
   Map<String, dynamic> toMap() {
     var map = {
-      StringConstants.from_currency_code: fromCurrencyCode,
-      StringConstants.from_currency_name: fromCurrencyName,
-      StringConstants.to_currency_code: toCurrencyCode,
-      StringConstants.to_currency_name: toCurrencyName,
-      StringConstants.rate: rate
+      DBStrings.from_currency_code: fromCurrencyCode,
+      DBStrings.from_currency_name: fromCurrencyName,
+      DBStrings.to_currency_code: toCurrencyCode,
+      DBStrings.to_currency_name: toCurrencyName,
+      DBStrings.rate: rate
     };
-    if (id != null) map[StringConstants.id] = id!;
+    if (id != null) map[DBStrings.id] = id!;
 
     return map;
   }
 
   factory ExchangeRateEntity.fromMap(Map<String, dynamic> map) => ExchangeRateEntity(
-        id: map[StringConstants.id],
-        fromCurrencyCode: map[StringConstants.from_currency_code],
-        fromCurrencyName: map[StringConstants.from_currency_name],
-        toCurrencyCode: map[StringConstants.to_currency_code],
-        toCurrencyName: map[StringConstants.to_currency_name],
-        rate: map[StringConstants.rate],
+        id: map[DBStrings.id],
+        fromCurrencyCode: map[DBStrings.from_currency_code],
+        fromCurrencyName: map[DBStrings.from_currency_name],
+        toCurrencyCode: map[DBStrings.to_currency_code],
+        toCurrencyName: map[DBStrings.to_currency_name],
+        rate: map[DBStrings.rate],
       );
 
   @override

@@ -49,6 +49,10 @@ class HomeScopedModel extends BaseScopedModel {
     notifyListeners();
   }
 
+  onRetryButtonPressed() {
+    onAmountSubmitted(_fromAmount.toString());
+  }
+
   onAmountSubmitted(String amountStr) async {
     setState(ViewState.LOADING);
 
@@ -95,7 +99,7 @@ class HomeScopedModel extends BaseScopedModel {
 
       setState(ViewState.READY);
     } on ExchangeRateRetrievalException {
-      _setErrorState(ErrorType.RETRIEVAL, 'Could not retrieve the exchange rate\nTry again later');
+      _setErrorState(ErrorType.RETRIEVAL, 'Could not retrieve the exchange rate');
     } catch (e) {
       _setErrorState(ErrorType.UNEXPECTED, 'Unexpected error : ${e.runtimeType}');
     }

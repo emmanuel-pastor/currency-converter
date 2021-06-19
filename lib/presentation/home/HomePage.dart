@@ -83,10 +83,18 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 20),
                 if (scopedModel.state == ViewState.ERROR &&
                     scopedModel.error.type != ErrorType.PARSING)
-                  Text(
-                    scopedModel.error.message,
-                    style: TextStyle(color: Colors.red, fontSize: 18),
-                    textAlign: TextAlign.center,
+                  Column(
+                    children: [
+                      Text(
+                        scopedModel.error.message,
+                        style: TextStyle(color: Colors.red, fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                      TextButton(
+                        onPressed: scopedModel.onRetryButtonPressed,
+                        child: Text('RETRY'),
+                      ),
+                    ],
                   ),
               ],
             ),

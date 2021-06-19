@@ -1,3 +1,4 @@
+import 'package:currency_converter/domain/models/exchange-rate/ExchangeRate.dart';
 import 'package:currency_converter/domain/repositories/ExchangeRateRepository.dart';
 
 class ConversionUseCase {
@@ -9,14 +10,21 @@ class ConversionUseCase {
       double amount,
       {required String fromCurrencyCode,
       required String toCurrencyCode}) async {
-    final exchangeRate = await _repo.getExchangeRate(
-        fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
+    ExchangeRate? exchangeRate;
+    try {
+      exchangeRate = await _repo.getExchangeRate(
+          fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
+    } catch (e) {
+      throw e;
+    }
 
     final rate = exchangeRate?.rate;
     if (rate != null) {
       return Future<double>.value(amount * rate);
     } else {
-      throw Exception('Could not load the exchange rate');
+      throw ExchangeRateRetrievalException();
     }
   }
 }
+
+class ExchangeRateRetrievalException implements Exception{}

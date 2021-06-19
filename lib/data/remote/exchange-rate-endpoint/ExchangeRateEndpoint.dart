@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:currency_converter/data/remote/exchange-rate-endpoint/FakeExchangeRateAPIService.dart';
 
@@ -29,8 +30,8 @@ class ExchangeRateEndpoint {
       });
 
       return ExchangeRateDTO.fromJson(jsonDecode(json));
-    } on Exception {
-      return Future.error('Error retrieving exchange rate');
+    } on HttpException catch(e) {
+      throw e;
     }
   }
 }

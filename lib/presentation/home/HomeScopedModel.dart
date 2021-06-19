@@ -81,8 +81,11 @@ class HomeScopedModel extends BaseScopedModel {
       setToAmount(convertedAmount);
 
       setState(ViewState.READY);
+    } on ExchangeRateRetrievalException {
+      setErrorMessage('Could not retrieve the exchange rate. Try again later');
+      setState(ViewState.ERROR);
     } catch (e) {
-      setErrorMessage('Could not convert the submitted amount');
+      setErrorMessage('Unexpected error : ${e.runtimeType}');
       setState(ViewState.ERROR);
     }
   }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
@@ -31,7 +33,7 @@ class APIService {
     if (response.statusCode == 200) {
       return response.body;
     } else {
-      throw Exception('Failed to load json data');
+      throw HttpException('${response.statusCode} http error');
     }
   }
 }

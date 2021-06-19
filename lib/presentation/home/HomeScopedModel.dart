@@ -23,22 +23,22 @@ class HomeScopedModel extends BaseScopedModel {
   ViewError<ErrorType> _error = ViewError(ErrorType.NONE, '');
   ViewError<ErrorType> get error => _error;
 
-  setFromCurrencyCode(String currencyCode) {
+  _setFromCurrencyCode(String currencyCode) {
     _fromCurrencyCode = currencyCode;
     notifyListeners();
   }
 
-  setToCurrencyCode(String currencyCode) {
+  _setToCurrencyCode(String currencyCode) {
     _toCurrencyCode = currencyCode;
     notifyListeners();
   }
 
-  setFromAmount(double amount) {
+  _setFromAmount(double amount) {
     _fromAmount = amount;
     notifyListeners();
   }
 
-  setToAmount(double amount) {
+  _setToAmount(double amount) {
     _toAmount = amount;
     notifyListeners();
   }
@@ -57,7 +57,7 @@ class HomeScopedModel extends BaseScopedModel {
       _setErrorState(ErrorType.PARSING, 'Could not parse the submitted amount');
       setState(ViewState.ERROR);
     } else {
-      setFromAmount(amount);
+      _setFromAmount(amount);
 
       _convertCurrencyAndUpdateState();
     }
@@ -67,7 +67,7 @@ class HomeScopedModel extends BaseScopedModel {
     if (currencyCode == null) {
       _setErrorState(ErrorType.NO_ORIGIN_CURRENCY, 'No origin currency selected');
     } else {
-      _onCurrencyChanged(currencyCode, setFromCurrencyCode);
+      _onCurrencyChanged(currencyCode, _setFromCurrencyCode);
     }
   }
 
@@ -75,7 +75,7 @@ class HomeScopedModel extends BaseScopedModel {
     if (currencyCode == null) {
       _setErrorState(ErrorType.NO_DESTINATION_CURRENCY, 'No destination currency selected');
     } else {
-      _onCurrencyChanged(currencyCode, setToCurrencyCode);
+      _onCurrencyChanged(currencyCode, _setToCurrencyCode);
     }
   }
 
@@ -91,7 +91,7 @@ class HomeScopedModel extends BaseScopedModel {
     try {
       final convertedAmount = await _conversionUseCase.convert(fromAmount,
           fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
-      setToAmount(convertedAmount);
+      _setToAmount(convertedAmount);
 
       setState(ViewState.READY);
     } on ExchangeRateRetrievalException {

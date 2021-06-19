@@ -49,10 +49,13 @@ class _HomePageState extends State<HomePage> {
                   autofocus: true,
                   decoration: InputDecoration(
                     labelText: 'Amount in ${scopedModel.fromCurrencyCode}',
-                    errorText:
-                        scopedModel.state == ViewState.ERROR ? '${scopedModel.errorMessage}' : null,
+                    errorText: scopedModel.state == ViewState.ERROR &&
+                            scopedModel.error.type == ErrorType.PARSING
+                        ? '${scopedModel.error.message}'
+                        : null,
                     border: OutlineInputBorder(),
-                    suffixIcon: scopedModel.state == ViewState.ERROR
+                    suffixIcon: scopedModel.state == ViewState.ERROR &&
+                            scopedModel.error.type == ErrorType.PARSING
                         ? Icon(
                             Icons.error,
                             color: Colors.red,
@@ -76,6 +79,14 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     scopedModel.toAmount.toStringAsFixed(2),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                SizedBox(height: 20),
+                if (scopedModel.state == ViewState.ERROR &&
+                    scopedModel.error.type != ErrorType.PARSING)
+                  Text(
+                    scopedModel.error.message,
+                    style: TextStyle(color: Colors.red, fontSize: 18),
+                    textAlign: TextAlign.center,
                   ),
               ],
             ),

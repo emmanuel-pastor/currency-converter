@@ -1,12 +1,13 @@
 import 'package:currency_converter/domain/features/conversion/UseCases.dart';
 import 'package:currency_converter/presentation/BaseScopedModel.dart';
+import 'package:currency_converter/presentation/ViewError.dart';
 import 'package:currency_converter/presentation/ViewState.dart';
 
 class HomeScopedModel extends BaseScopedModel {
   final ConversionUseCase _conversionUseCase;
-  
+
   HomeScopedModel(this._conversionUseCase);
-  
+
   String _fromCurrencyCode = "EUR";
   String get fromCurrencyCode => _fromCurrencyCode;
 
@@ -18,6 +19,9 @@ class HomeScopedModel extends BaseScopedModel {
 
   double _toAmount = 0;
   double get toAmount => _toAmount;
+  
+  ViewError<ErrorType> _error = ViewError(ErrorType.NONE, '');
+  ViewError<ErrorType> get error => _error;
 
   setFromCurrencyCode(String currencyCode) {
     _fromCurrencyCode = currencyCode;
@@ -39,12 +43,18 @@ class HomeScopedModel extends BaseScopedModel {
     notifyListeners();
   }
 
+  _setErrorState(ErrorType errorType, [String message = '']) {
+    _error = ViewError(errorType, message);
+    setState(ViewState.ERROR);
+    notifyListeners();
+  }
+
   onAmountSubmitted(String amountStr) async {
     setState(ViewState.LOADING);
 
     var amount = double.tryParse(amountStr.replaceAll(',', '.'));
     if (amount == null) {
-      setErrorMessage('Could not parse the submitted amount');
+      _setErrorState(ErrorType.PARSING, 'Could not parse the submitted amount');
       setState(ViewState.ERROR);
     } else {
       setFromAmount(amount);
@@ -54,24 +64,27 @@ class HomeScopedModel extends BaseScopedModel {
   }
 
   onFromCurrencyChanged(String? currencyCode) {
-    _onCurrencyChanged(currencyCode, setFromCurrencyCode);
+    if (currencyCode == null) {
+      _setErrorState(ErrorType.NO_ORIGIN_CURRENCY, 'No origin currency selected');
+    } else {
+      _onCurrencyChanged(currencyCode, setFromCurrencyCode);
+    }
   }
 
   onToCurrencyChanged(String? currencyCode) {
-    _onCurrencyChanged(currencyCode, setToCurrencyCode);
+    if (currencyCode == null) {
+      _setErrorState(ErrorType.NO_DESTINATION_CURRENCY, 'No destination currency selected');
+    } else {
+      _onCurrencyChanged(currencyCode, setToCurrencyCode);
+    }
   }
 
-  _onCurrencyChanged(String? currencyCode, Function(String) updateCurrencyCode) {
+  _onCurrencyChanged(String currencyCode, Function(String) updateCurrencyCode) {
     setState(ViewState.LOADING);
 
-    if (currencyCode == null) {
-      setErrorMessage('No origin currency selected');
-      setState(ViewState.ERROR);
-    } else {
-      updateCurrencyCode(currencyCode);
+    updateCurrencyCode(currencyCode);
 
-      _convertCurrencyAndUpdateState();
-    }
+    _convertCurrencyAndUpdateState();
   }
 
   _convertCurrencyAndUpdateState() async {
@@ -82,11 +95,18 @@ class HomeScopedModel extends BaseScopedModel {
 
       setState(ViewState.READY);
     } on ExchangeRateRetrievalException {
-      setErrorMessage('Could not retrieve the exchange rate. Try again later');
-      setState(ViewState.ERROR);
+      _setErrorState(ErrorType.RETRIEVAL, 'Could not retrieve the exchange rate\nTry again later');
     } catch (e) {
-      setErrorMessage('Unexpected error : ${e.runtimeType}');
-      setState(ViewState.ERROR);
+      _setErrorState(ErrorType.UNEXPECTED, 'Unexpected error : ${e.runtimeType}');
     }
   }
+}
+
+enum ErrorType {
+  NONE,
+  PARSING,
+  NO_ORIGIN_CURRENCY,
+  NO_DESTINATION_CURRENCY,
+  RETRIEVAL,
+  UNEXPECTED
 }

@@ -49,7 +49,7 @@ class HomeScopedModel extends BaseScopedModel {
     notifyListeners();
   }
 
-  onRetryButtonPressed() {
+  onRetry() {
     onAmountSubmitted(_fromAmount.toString());
   }
 

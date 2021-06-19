@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                         textAlign: TextAlign.center,
                       ),
                       TextButton(
-                        onPressed: scopedModel.onRetryButtonPressed,
+                        onPressed: scopedModel.onRetry,
                         child: Text('RETRY'),
                       ),
                     ],

@@ -52,7 +52,7 @@ class HomeScopedModel extends BaseScopedModel {
   onAmountSubmitted(String amountStr) async {
     setState(ViewState.LOADING);
 
-    var amount = double.tryParse(amountStr.replaceAll(',', '.'));
+    var amount = double.tryParse(amountStr.trim().replaceAll(',', '.').replaceAll('', '0'));
     if (amount == null) {
       _setErrorState(ErrorType.PARSING, 'Could not parse the submitted amount');
       setState(ViewState.ERROR);

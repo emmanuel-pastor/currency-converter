@@ -2,6 +2,7 @@ import 'package:currency_converter/presentation/BasePage.dart';
 import 'package:currency_converter/presentation/ViewState.dart';
 import 'package:currency_converter/presentation/home/HomeScopedModel.dart';
 import 'package:currency_converter/presentation/home/widgets/CurrencyDropdown.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -90,10 +91,12 @@ class _HomePageState extends State<HomePage> {
                         style: TextStyle(color: Colors.red, fontSize: 18),
                         textAlign: TextAlign.center,
                       ),
-                      TextButton(
-                        onPressed: scopedModel.onRetry,
-                        child: Text('RETRY'),
-                      ),
+                      if (scopedModel.error.type == ErrorType.RETRIEVAL ||
+                          scopedModel.error.type == ErrorType.UNEXPECTED)
+                        TextButton(
+                          onPressed: scopedModel.onRetry,
+                          child: Text('RETRY'),
+                        ),
                     ],
                   ),
               ],

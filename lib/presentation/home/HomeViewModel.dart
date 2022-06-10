@@ -1,67 +1,57 @@
 import 'package:currency_converter/domain/features/conversion/UseCases.dart';
-import 'package:currency_converter/presentation/BaseScopedModel.dart';
 import 'package:currency_converter/presentation/ViewError.dart';
 import 'package:currency_converter/presentation/ViewState.dart';
+import 'package:mobx/mobx.dart';
 
-class HomeScopedModel extends BaseScopedModel {
-  final ConversionUseCase _conversionUseCase;
+part 'HomeViewModel.g.dart';
 
-  HomeScopedModel(this._conversionUseCase);
+class HomeViewModel extends _HomeViewModel with _$HomeViewModel {
+    HomeViewModel(ConversionUseCase conversionUseCase) {
+      super._conversionUseCase = conversionUseCase;
+    }
+}
 
-  String _fromCurrencyCode = "EUR";
-  String get fromCurrencyCode => _fromCurrencyCode;
+abstract class _HomeViewModel with Store {
+  late ConversionUseCase _conversionUseCase;
 
-  String _toCurrencyCode = "USD";
-  String get toCurrencyCode => _toCurrencyCode;
+  @observable
+  ViewState state = ViewState.READY;
 
-  double _fromAmount = 0;
-  double get fromAmount => _fromAmount;
+  @observable
+  String fromCurrencyCode = "EUR";
 
-  double _toAmount = 0;
-  double get toAmount => _toAmount;
-  
-  ViewError<ErrorType> _error = ViewError(ErrorType.NONE, '');
-  ViewError<ErrorType> get error => _error;
+  @observable
+  String toCurrencyCode = "USD";
 
-  _setFromCurrencyCode(String currencyCode) {
-    _fromCurrencyCode = currencyCode;
-    notifyListeners();
-  }
+  @observable
+  double fromAmount = 0;
 
-  _setToCurrencyCode(String currencyCode) {
-    _toCurrencyCode = currencyCode;
-    notifyListeners();
-  }
+  @observable
+  double toAmount = 0;
 
-  _setFromAmount(double amount) {
-    _fromAmount = amount;
-    notifyListeners();
-  }
+  @observable
+  ViewError<ErrorType> error = ViewError(ErrorType.NONE, '');
 
-  _setToAmount(double amount) {
-    _toAmount = amount;
-    notifyListeners();
-  }
-
+  @action
   _setErrorState(ErrorType errorType, [String message = '']) {
-    _error = ViewError(errorType, message);
-    setState(ViewState.ERROR);
-    notifyListeners();
+    error = ViewError(errorType, message);
+    state = ViewState.ERROR;
   }
 
   onRetry() {
-    onAmountSubmitted(_fromAmount.toString());
+    onAmountSubmitted(fromAmount.toString());
   }
 
+  @action
   onAmountSubmitted(String amountStr) async {
-    setState(ViewState.LOADING);
+    state = ViewState.LOADING;
 
     var amount = amountStr.isEmpty ? 0.0 : double.tryParse(amountStr.trim().replaceAll(',', '.'));
     if (amount == null) {
       _setErrorState(ErrorType.PARSING, 'Could not parse the submitted amount');
-      setState(ViewState.ERROR);
+      state = ViewState.ERROR;
     } else {
-      _setFromAmount(amount);
+      fromAmount = amount;
 
       _convertCurrencyAndUpdateState();
     }
@@ -71,7 +61,7 @@ class HomeScopedModel extends BaseScopedModel {
     if (currencyCode == null) {
       _setErrorState(ErrorType.NO_ORIGIN_CURRENCY, 'No origin currency selected');
     } else {
-      _onCurrencyChanged(currencyCode, _setFromCurrencyCode);
+      _onCurrencyChanged(currencyCode, true);
     }
   }
 
@@ -79,25 +69,31 @@ class HomeScopedModel extends BaseScopedModel {
     if (currencyCode == null) {
       _setErrorState(ErrorType.NO_DESTINATION_CURRENCY, 'No destination currency selected');
     } else {
-      _onCurrencyChanged(currencyCode, _setToCurrencyCode);
+      _onCurrencyChanged(currencyCode, false);
     }
   }
 
-  _onCurrencyChanged(String currencyCode, Function(String) updateCurrencyCode) {
-    setState(ViewState.LOADING);
+  @action
+  _onCurrencyChanged(String currencyCode, bool shouldConvertFromCurrencyCode) {
+    state = ViewState.LOADING;
 
-    updateCurrencyCode(currencyCode);
+    if (shouldConvertFromCurrencyCode) {
+      fromCurrencyCode = currencyCode;
+    } else {
+      toCurrencyCode = currencyCode;
+    }
 
     _convertCurrencyAndUpdateState();
   }
 
+  @action
   _convertCurrencyAndUpdateState() async {
     try {
       final convertedAmount = await _conversionUseCase.convert(fromAmount,
           fromCurrencyCode: fromCurrencyCode, toCurrencyCode: toCurrencyCode);
-      _setToAmount(convertedAmount);
+      toAmount = convertedAmount;
 
-      setState(ViewState.READY);
+      state = ViewState.READY;
     } on ExchangeRateRetrievalException {
       _setErrorState(ErrorType.RETRIEVAL, 'Could not retrieve the exchange rate');
     } catch (e) {

@@ -1,6 +1,6 @@
 import 'package:currency_converter/presentation/BasePage.dart';
 import 'package:currency_converter/presentation/ViewState.dart';
-import 'package:currency_converter/presentation/home/HomeScopedModel.dart';
+import 'package:currency_converter/presentation/home/HomeViewModel.dart';
 import 'package:currency_converter/presentation/home/widgets/CurrencyDropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +29,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BasePage<HomeScopedModel>(
-      initialState: ViewState.READY,
-      builder: (context, child, scopedModel) => Scaffold(
+    return BasePage<HomeViewModel>(
+      builder: (context, viewModel) => Scaffold(
         body: Container(
           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
           child: Center(
@@ -39,9 +38,9 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CurrencyDropdown(
-                  selectedCurrencyCode: scopedModel.fromCurrencyCode,
-                  disabledCurrencyCode: scopedModel.toCurrencyCode,
-                  onCurrencyChanged: scopedModel.onFromCurrencyChanged,
+                  selectedCurrencyCode: viewModel.fromCurrencyCode,
+                  disabledCurrencyCode: viewModel.toCurrencyCode,
+                  onCurrencyChanged: viewModel.onFromCurrencyChanged,
                 ),
                 SizedBox(height: 20),
                 TextFormField(
@@ -49,14 +48,12 @@ class _HomePageState extends State<HomePage> {
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   autofocus: true,
                   decoration: InputDecoration(
-                    labelText: 'Amount in ${scopedModel.fromCurrencyCode}',
-                    errorText: scopedModel.state == ViewState.ERROR &&
-                            scopedModel.error.type == ErrorType.PARSING
-                        ? '${scopedModel.error.message}'
+                    labelText: 'Amount in ${viewModel.fromCurrencyCode}',
+                    errorText: viewModel.state == ViewState.ERROR && viewModel.error.type == ErrorType.PARSING
+                        ? '${viewModel.error.message}'
                         : null,
                     border: OutlineInputBorder(),
-                    suffixIcon: scopedModel.state == ViewState.ERROR &&
-                            scopedModel.error.type == ErrorType.PARSING
+                    suffixIcon: viewModel.state == ViewState.ERROR && viewModel.error.type == ErrorType.PARSING
                         ? Icon(
                             Icons.error,
                             color: Colors.red,
@@ -64,37 +61,35 @@ class _HomePageState extends State<HomePage> {
                         : null,
                   ),
                   onFieldSubmitted: (String value) async {
-                    scopedModel.onAmountSubmitted(value);
+                    viewModel.onAmountSubmitted(value);
                   },
                 ),
                 SizedBox(height: 20),
                 CurrencyDropdown(
-                  selectedCurrencyCode: scopedModel.toCurrencyCode,
-                  disabledCurrencyCode: scopedModel.fromCurrencyCode,
-                  onCurrencyChanged: scopedModel.onToCurrencyChanged,
+                  selectedCurrencyCode: viewModel.toCurrencyCode,
+                  disabledCurrencyCode: viewModel.fromCurrencyCode,
+                  onCurrencyChanged: viewModel.onToCurrencyChanged,
                 ),
                 SizedBox(height: 20),
-                if (scopedModel.state == ViewState.LOADING)
+                if (viewModel.state == ViewState.LOADING)
                   CircularProgressIndicator()
-                else if (scopedModel.state == ViewState.READY)
+                else if (viewModel.state == ViewState.READY)
                   Text(
-                    scopedModel.toAmount.toStringAsFixed(2),
+                    viewModel.toAmount.toStringAsFixed(2),
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 SizedBox(height: 20),
-                if (scopedModel.state == ViewState.ERROR &&
-                    scopedModel.error.type != ErrorType.PARSING)
+                if (viewModel.state == ViewState.ERROR && viewModel.error.type != ErrorType.PARSING)
                   Column(
                     children: [
                       Text(
-                        scopedModel.error.message,
+                        viewModel.error.message,
                         style: TextStyle(color: Colors.red, fontSize: 18),
                         textAlign: TextAlign.center,
                       ),
-                      if (scopedModel.error.type == ErrorType.RETRIEVAL ||
-                          scopedModel.error.type == ErrorType.UNEXPECTED)
+                      if (viewModel.error.type == ErrorType.RETRIEVAL || viewModel.error.type == ErrorType.UNEXPECTED)
                         TextButton(
-                          onPressed: scopedModel.onRetry,
+                          onPressed: viewModel.onRetry,
                           child: Text('RETRY'),
                         ),
                     ],

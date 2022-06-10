@@ -32,6 +32,12 @@ abstract class _HomeViewModel with Store {
   @observable
   ViewError<ErrorType> error = ViewError(ErrorType.NONE, '');
 
+  @computed
+  bool get hasError => state == ViewState.ERROR;
+
+  @computed
+  bool get hasParsingError => hasError && error.type == ErrorType.PARSING;
+
   @action
   _setErrorState(ErrorType errorType, [String message = '']) {
     error = ViewError(errorType, message);

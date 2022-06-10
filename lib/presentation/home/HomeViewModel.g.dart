@@ -9,6 +9,20 @@ part of 'HomeViewModel.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$HomeViewModel on _HomeViewModel, Store {
+  Computed<bool>? _$hasErrorComputed;
+
+  @override
+  bool get hasError => (_$hasErrorComputed ??=
+          Computed<bool>(() => super.hasError, name: '_HomeViewModel.hasError'))
+      .value;
+  Computed<bool>? _$hasParsingErrorComputed;
+
+  @override
+  bool get hasParsingError =>
+      (_$hasParsingErrorComputed ??= Computed<bool>(() => super.hasParsingError,
+              name: '_HomeViewModel.hasParsingError'))
+          .value;
+
   late final _$stateAtom = Atom(name: '_HomeViewModel.state', context: context);
 
   @override
@@ -157,7 +171,9 @@ fromCurrencyCode: ${fromCurrencyCode},
 toCurrencyCode: ${toCurrencyCode},
 fromAmount: ${fromAmount},
 toAmount: ${toAmount},
-error: ${error}
+error: ${error},
+hasError: ${hasError},
+hasParsingError: ${hasParsingError}
     ''';
   }
 }

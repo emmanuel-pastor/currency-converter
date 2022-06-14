@@ -55,7 +55,6 @@ abstract class _HomeViewModel with Store {
     var amount = amountStr.isEmpty ? 0.0 : double.tryParse(amountStr.trim().replaceAll(',', '.'));
     if (amount == null) {
       _setErrorState(ErrorType.PARSING, 'Could not parse the submitted amount');
-      state = ViewState.ERROR;
     } else {
       fromAmount = amount;
 
